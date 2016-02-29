@@ -68,7 +68,7 @@ def lint_directory(directory):
     cpp_files = []
     for root, _, filenames in os.walk(directory):
         for ending in cpp_endings:
-            for filename in fnmatch.filter(filenames, ending):
+            for filename in fnmatch.filter(filenames, "*"+ending):
                 cpp_files.append(os.path.join(root, filename))
     returncode = cpplint(cpp_files)
     print
@@ -81,7 +81,7 @@ def lint_directory(directory):
     return returncode
 
 
-cpp_endings = ["*.c", "*.cpp", "*.cc", "*.h", "*.hpp", "*.hh"]
+cpp_endings = [".c", ".cpp", ".cc", ".h", ".hpp", ".hh"]
 
 
 def cpplint(files):
@@ -109,6 +109,7 @@ def pep8(files):
         "W0142",  # ** arguments are ok. Just a little "magic".
         "R0913",  # Allow for more than 4 arguments to _init__.
         "R0903",  # Allow classes to have one or two public methods.
+        "E266",   # Allow comments to start with "## " for doxygen
     ]
     if files:
         proc = subprocess.Popen([
