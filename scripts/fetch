@@ -13,13 +13,16 @@ import os
 import re
 import sys
 
-from fetch_tools.commands import run, sync, create_account, lint
+from fetch_tools.commands import run, push, pull, create_account, lint, workspace_status, debug_snapshot
 
 commands = [
     create_account,
-    sync,
+    push,
+    pull,
     run,
     lint,
+    workspace_status,
+    debug_snapshot,
 ]
 
 root = argparse.ArgumentParser(description="Fetch Tool")
@@ -57,6 +60,10 @@ if "robot" in args and args.robot is None:
             print("ERROR: Must specify robot with --robot ROBOT or set "
                   "$ROS_MASTER_URI to point at the desired robot.")
             sys.exit(1)
+if "robot" in args and args.robot in [None, ""]:
+    print("ERROR: Must specify robot with --robot ROBOT or set "
+          "$ROS_MASTER_URI to point at the desired robot.")
+    sys.exit(1)
 
 # If workspace isn't specified, default to $FETCH_WORKSPACE if
 # set. Else, infer from $HOME and $ROS_DISTRO.
@@ -66,8 +73,12 @@ if "workspace" in args and args.workspace is None:
         args.workspace = os.getenv("HOME")+"/"+os.getenv("ROS_DISTRO")
     if args.workspace.endswith("/"):
         args.workspace = args.workspace[:-1]
-if "workspace" in args:
-    args.relative_workspace = args.workspace.replace(os.getenv("HOME"), "~")
+if "remote_workspace" in args and args.remote_workspace is None:
+    args.remote_workspace = os.getenv("FETCH_REMOTE_WORKSPACE")
+    if args.remote_workspace is None and args.workspace is not None:
+        args.remote_workspace = args.workspace.replace(os.getenv("HOME"), "~")
+    if args.remote_workspace.endswith("/"):
+        args.workspace = args.remote_workspace[:-1]
 
 # Run the command
 args.main(args)

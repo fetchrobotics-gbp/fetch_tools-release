@@ -9,23 +9,43 @@ from argcomplete.completers import ChoicesCompleter
 import subprocess
 
 
-def ssh(user, host, command, password=None):
+def ssh(user, host, command, password=None, fname=None):
     "Run the command on the remote host as the given user."
-    if password is None:
-        proc = subprocess.Popen(["ssh", "-t", user + "@" + host, command])
-        proc.wait()
-        return proc.returncode
-    else:
-        proc = subprocess.Popen(["sshpass", "-e",
-                                 "ssh", "-t", user + "@" + host, command],
-                                env={"SSHPASS": password})
-        proc.wait()
-        return proc.returncode
+
+    userhost = user + "@" + host
+    ssh_command = ["ssh", "-t", userhost, command]
+
+    e_vars = None
+    if password:
+        ssh_command = ["sshpass", "-e"] + ssh_command
+        e_vars = {"SSHPASS": password}
+
+    pipe = open(fname + ".txt", 'w') if fname else None
+
+    proc = subprocess.Popen(ssh_command, env=e_vars, stdout=pipe, stderr=pipe)
+    proc.wait()
+    if fname:
+        pipe.close()
+    return proc.returncode
+
+
+def run(command):
+    proc = subprocess.Popen(["bash", "-c", command])
+    proc.wait()
+    return proc.returncode
 
 
 # Arguments
-robots = ["freight" + str(i) for i in range(9)] + \
-         ["fetch" + str(i) for i in range(7)]
+def RobotCompleter(prefix, **kwargs):
+    options = []
+    if "fetch".startswith(prefix) and prefix != "fetch":
+        options.extend("fetch" + str(i) for i in range(10))
+    if "freight".startswith(prefix) and prefix != "freight":
+        options.extend("freight" + str(i) for i in range(10))
+    if options:
+        return options
+    return (prefix + str(i) for i in range(10))
+
 users = subprocess.check_output(["awk", "-F:", "{ print $1}", "/etc/passwd"]) \
                   .split()
 
@@ -38,9 +58,11 @@ def add_user(parser):
 
 def add_robot(parser):
     arg = parser.add_argument("--robot", action="store", help="Robot to use")
-    arg.completer = ChoicesCompleter(robots)
+    arg.completer = RobotCompleter
 
 
 def add_workspace(parser):
     parser.add_argument("--workspace", action="store",
-                        help="Catkin worspace to use")
+                        help="Catkin workspace to use")
+    parser.add_argument("--remote-workspace", action="store",
+                        help="Catkin workspace to use on the robot")
