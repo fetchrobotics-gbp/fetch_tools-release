@@ -2,6 +2,11 @@
 Changelog for package fetch_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.1.3 (2016-03-24)
+------------------
+* Added upstart conf files to debug-snapshot zip
+* Contributors: Aaron Blasdel
+
 0.1.2 (2016-02-29)
 ------------------
 *  Added three commands:
