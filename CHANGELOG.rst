@@ -2,6 +2,18 @@
 Changelog for package fetch_tools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.3.1 (2020-09-20)
+------------------
+* Update dependencies from py2 to py3
+* Contributors: Eric Relson
+
+0.3.0 (2020-09-20)
+------------------
+* Convert to python3 + ROS noetic
+* Text improvements to debug_snapshot tool
+* Several 18.04 fixes to debug_snapshot tool
+* Contributors: Alex Moriarty, Eric Relson, Nick Walker, Russell Toris
+
 0.2.1 (2019-03-26)
 ------------------
 * Fixups for indigo->melodic; package format (`#13 <https://github.com/fetchrobotics/fetch_tools/issues/13>`_)
@@ -29,7 +41,7 @@ Changelog for package fetch_tools
 
 0.1.2 (2016-02-29)
 ------------------
-*  Added three commands:
+* Added three commands:
   - `fetch debug-snapshot`
   - `fetch pull`
   - `fetch workspace-status`
