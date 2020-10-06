@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>fetch_tools</name>
-  <version>0.2.1</version>
+  <version>0.2.2</version>
   <description>Commands for performing common operations when
   developing on the robots. For help, run `fetch -h` and `fetch
   COMMAND -h`.</description>
 
   <author>Alex Henning</author>
+  <maintainer email="erelson@fetchrobotics.com">Eric Relson</maintainer>
+  <maintainer email="csaldanha@fetchrobotics.com">Carl Saldanha</maintainer>
   <maintainer email="rtoris@fetchrobotics.com">Russell Toris</maintainer>
-  <maintainer email="amoriarty@fetchrobotics.com">Alex Moriarty</maintainer>
+  <maintainer email="opensource@fetchrobotics.com">Fetch Robotics Open Source Team</maintainer>
 
   <license>BSD</license>
 
