@@ -1,7 +1,7 @@
 """
 The snapshot command creates a zip file of relevant robot debug info.
 
-Copyright 2016-2020 Fetch Robotics Inc.
+Copyright 2016-2019 Fetch Robotics Inc.
 Authors: Aaron Blasdel, Eric Relson
 """
 
@@ -24,7 +24,7 @@ fileroot = '_' + fileroot + '_'
 bagname = 'robot.bag'
 
 # all ros command must source setup.bash
-rosbash = 'source /opt/ros/noetic/setup.bash;'
+rosbash = 'source /opt/ros/melodic/setup.bash;'
 devnull = open(os.devnull, 'w+')
 
 topics = ["/robot_state",
@@ -33,8 +33,8 @@ topics = ["/robot_state",
           "/battery_state"]
 
 # All commands requiring sudo must be added in main
-commands = {"dpkg_fetch": "COLUMNS=200 dpkg -l ros-noetic-fetch-*",
-            "dpkg_ros": "COLUMNS=200 dpkg -l ros-noetic-*",
+commands = {"dpkg_fetch": "COLUMNS=200 dpkg -l ros-melodic-fetch-*",
+            "dpkg_ros": "COLUMNS=200 dpkg -l ros-melodic-*",
             "dpkg_all": "COLUMNS=200 dpkg -l",
             "lsusb": "lsusb -v",
             "lspci": "lspci -vv",
@@ -83,7 +83,6 @@ def main(args):
 
     print('Running debug snapshot tool.')
     dirpath = tempfile.mkdtemp()
-    print('... storing temporary files in: {0}'.format(dirpath))
 
     # Start bag recording
     bag_process = ['rosbag', 'record', '-q', '--duration=10', '-j',
@@ -95,7 +94,7 @@ def main(args):
         version_file.write(snapshot_version)
 
     # Execute remote commands on robot
-    for key, value in commands.items():
+    for key, value in commands.iteritems():
         print("Creating '%s.txt'." % key)
         ssh('fetch', args.robot, value, fname=dirpath + '/' + key,
             password=args.fetch_password[-1])
@@ -109,7 +108,7 @@ def main(args):
     timestr = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
     filename = args.robot + fileroot + timestr + '.zip'
 
-    print('Data gathering complete. Creating %s' % filename)
+    print('Data gathering complete creating %s' % filename)
     proc = subprocess.Popen(["zip", "-r", filename, dirpath],
                             stdout=devnull,
                             stderr=devnull)
@@ -119,9 +118,9 @@ def main(args):
     shutil.rmtree(dirpath)
 
     if proc.returncode == 0:
-        print("\nCreated %s which you can send to Fetch support" % filename)
+        print("Created %s" % filename)
     else:
-        print("\nERROR: failed to zip directory: %s" % dirpath)
+        print("ERROR: failed to zip directory: %s" % dirpath)
 
 def add_arguments(parser):
     parser.add_argument(
