@@ -1,3 +1,26 @@
+## fetch_tools (melodic) - 0.2.2-1
+
+The packages in the `fetch_tools` repository were released into the `melodic` distro by running `/usr/bin/bloom-release fetch_tools --rosdistro melodic` on `Tue, 06 Oct 2020 04:26:26 -0000`
+
+The `fetch_tools` package was released.
+
+Version of package(s) in repository `fetch_tools`:
+
+- upstream repository: https://github.com/fetchrobotics/fetch_tools.git
+- release repository: https://github.com/fetchrobotics-gbp/fetch_tools-release.git
+- rosdistro version: `0.2.1-0`
+- old version: `0.2.1-0`
+- new version: `0.2.2-1`
+
+Versions of tools used:
+
+- bloom version: `0.9.8`
+- catkin_pkg version: `0.4.22`
+- rosdep version: `0.19.0`
+- rosdistro version: `0.8.2`
+- vcstools version: `0.1.42`
+
+
 ## fetch_tools (noetic) - 0.3.2-1
 
 The packages in the `fetch_tools` repository were released into the `noetic` distro by running `/usr/bin/bloom-release fetch_tools --rosdistro noetic` on `Wed, 23 Sep 2020 23:41:48 -0000`
