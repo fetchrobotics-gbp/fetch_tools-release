@@ -1,0 +1,13 @@
+Source: ros-noetic-fetch-tools
+Section: misc
+Priority: optional
+Maintainer: Eric Relson <erelson@fetchrobotics.com>
+Build-Depends: debhelper (>= 9.0.0), python3-rospkg, ros-noetic-catkin
+Homepage: https://github.com/fetchrobotics/fetch_tools/blob/master/README.md
+Standards-Version: 3.9.2
+
+Package: ros-noetic-fetch-tools
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3-argcomplete, python3-catkin-lint, ros-noetic-roslint, sshpass
+Description: Commands for performing common operations when developing on the robots.
+ For help, run `fetch -h` and `fetch COMMAND -h`.
