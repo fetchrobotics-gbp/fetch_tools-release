@@ -7,6 +7,7 @@ Author: Alex Henning
 
 from argcomplete.completers import ChoicesCompleter
 import subprocess
+import sys
 
 
 def ssh(user, host, command, password=None, fname=None):
@@ -19,6 +20,10 @@ def ssh(user, host, command, password=None, fname=None):
     if password:
         ssh_command = ["sshpass", "-e"] + ssh_command
         e_vars = {"SSHPASS": password}
+        # Notify user if they're missing sshpass
+        if subprocess.call(["which", "sshpass"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL):
+            sys.exit("\nERROR: You need `sshpass` in order to supply passwords.\n"
+                     "Please run the following to install it:\n\tapt install sshpass")
 
     pipe = open(fname + ".txt", 'w') if fname else None
 
@@ -46,8 +51,7 @@ def RobotCompleter(prefix, **kwargs):
         return options
     return (prefix + str(i) for i in range(10))
 
-users = subprocess.check_output(["awk", "-F:", "{ print $1}", "/etc/passwd"]) \
-                  .split()
+users = subprocess.check_output(["awk", "-F:", "{ print $1}", "/etc/passwd"], encoding='utf-8').split()
 
 
 def add_user(parser):
